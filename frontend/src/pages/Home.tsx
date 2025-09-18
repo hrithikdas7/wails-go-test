@@ -1,11 +1,11 @@
-import { useState } from "react";
+
 import Timer from "@/components/Timer/Timer";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import ProjectList from "@/components/ProjectList/ProjectList";
 import TaskList from "@/components/TaskList/TaskList";
 
 const TimeTrackerApp = () => {
-  const [currentTime, setCurrentTime] = useState("07:39:57");
+
 
   const projects = [
     { id: "1", name: "Ddale Website", time: "1:04", active: false },
@@ -53,6 +53,7 @@ const TimeTrackerApp = () => {
       active: true,
     },
   ];
+ 
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -60,7 +61,7 @@ const TimeTrackerApp = () => {
       <div className="flex flex-1 ">
         {/* Left Sidebar - Projects */}
         <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col">
-          <Timer currentTime={currentTime} />
+          <Timer  />
 
           {/* Search Projects */}
           <SearchBar placeholder="Projects" />

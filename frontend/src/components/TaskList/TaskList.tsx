@@ -1,36 +1,29 @@
-import { Play } from "lucide-react";
+import { Play, Pause } from "lucide-react";
 import type { TaskListTypes } from "../types/taskList";
 
-const TaskList = ({tasks} : TaskListTypes) => {
+import useTaskList from "./useTaskList";
+
+const TaskList = ({ tasks }: TaskListTypes) => {
+  const { activeTask, startTimer, StopTimertask,getTaskClassName } = useTaskList();
   return (
     <div>
       <div className="flex-1 overflow-y-auto">
         {tasks.map((task) => (
           <div
             key={task?.id}
-            className={`flex items-center p-4 border-b border-gray-100 ${
-              task.status === "exceeded"
-                ? "bg-red-800 text-white"
-                : "hover:bg-gray-50"
-            }`}
+            className={getTaskClassName(task, activeTask)}
           >
-            <input
-              type="checkbox"
-              checked={task.completed}
-              className="mr-4 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              readOnly
-            />
             <div className="flex-1">
               <h3
                 className={`font-medium mb-1 ${
-                  task.status === "exceeded" ? "text-white" : "text-gray-800"
+                  task.status === "exceeded" || task.id === activeTask ? "text-white" : "text-gray-800"
                 }`}
               >
                 {task.name}
               </h3>
               <p
                 className={`text-sm ${
-                  task.status === "exceeded" ? "text-red-200" : "text-gray-500"
+                  task.status === "exceeded" || task.id === activeTask ? "text-red-200" : "text-gray-500"
                 }`}
               >
                 {task.description}
@@ -39,7 +32,7 @@ const TaskList = ({tasks} : TaskListTypes) => {
             <div className="flex items-center space-x-3">
               <div
                 className={`text-sm font-mono ${
-                  task.status === "exceeded" ? "text-white" : "text-gray-600"
+                  task.status === "exceeded" || task.id === activeTask ? "text-white" : "text-gray-600"
                 }`}
               >
                 {task.time}
@@ -49,13 +42,25 @@ const TaskList = ({tasks} : TaskListTypes) => {
                   Time exceeded
                 </div>
               )}
-              <Play
-                className={`h-4 w-4 cursor-pointer ${
-                  task.status === "exceeded"
-                    ? "text-white"
-                    : "text-gray-400 hover:text-gray-600"
-                }`}
-              />
+              {task.id === activeTask ? (
+                <Pause
+                  className={`h-4 w-4 cursor-pointer ${
+                    task.status === "exceeded" || task.id === activeTask
+                      ? "text-white"
+                      : "text-gray-400 hover:text-gray-600"
+                  }`}
+                  onClick={() => StopTimertask()}
+                />
+              ) : (
+                <Play
+                  className={`h-4 w-4 cursor-pointer ${
+                    task.status === "exceeded" || task.id === activeTask
+                      ? "text-white"
+                      : "text-gray-400 hover:text-gray-600"
+                  }`}
+                  onClick={() => startTimer(task.id)}
+                />
+              )}
             </div>
           </div>
         ))}
